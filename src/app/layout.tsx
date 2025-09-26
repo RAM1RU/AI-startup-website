@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
     return (
         <html lang="en" className={`${sora.variable} ${inter.variable}`}>
-        <body className="bg-grid-dark bg-stars">{children}</body>
+        <body>{children}</body>
         </html>
     );
 }
