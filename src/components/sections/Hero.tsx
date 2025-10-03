@@ -1,15 +1,35 @@
 "use client";
 import Section from "../Section";
 import Announcement from "../Announcement";
-import { Button } from "../ui/Button";
 import Image from "next/image";
 
-export default function Hero(){
+export default function Hero() {
     return (
         <Section className="pt-16 md:pt-20">
-            {/* единая карточка с фоном и glow */}
-            <div className="hero-card mx-auto max-w-7xl p-6 md:p-12 lg:p-16">
-                <div className="grid gap-10 lg:grid-cols-[1fr_auto] items-center">
+            {/* Единая карточка с фоном, сеткой и фиолетовыми бликами */}
+            <div className="hero-card mx-auto max-w-7xl p-6 md:p-12 lg:p-16 relative">
+                {/* 3D-слой с интерактивными кубами поверх фоновой композиции */}
+                <div className="hero-3d absolute inset-0 hidden lg:block pointer-events-none z-[2]">
+                    {/* верхний правый куб */}
+                    <Image
+                        src="/purple-cube.png"
+                        alt=""
+                        width={180}
+                        height={180}
+                        priority
+                        className="hero-cube top-[88px] right-[260px]"
+                    />
+                    {/* нижний правый куб */}
+                    <Image
+                        src="/purple-cube.png"
+                        alt=""
+                        width={180}
+                        height={180}
+                        className="hero-cube bottom-[54px] right-[160px]"
+                    />
+                </div>
+
+                <div className="grid gap-10 lg:grid-cols-[1fr_auto] items-center relative z-[1]">
                     {/* левая колонка */}
                     <div className="max-w-3xl">
                         <Announcement />
@@ -17,15 +37,19 @@ export default function Hero(){
                            text-[44px] leading-[1.05]
                            md:text-[72px] md:leading-[1.05]
                            lg:text-[96px] lg:leading-[1.05]">
-                            Elevate your <span className="text-brand">SEO</span> efforts.
+                            Not just <span className="text-brand">SMART,</span> Someone who <span className="text-brand">CARES.</span>
                         </h1>
 
                         <p className="mt-6 text-base md:text-lg text-white/70 max-w-2xl">
-                            Elevate your site’s visibility effortlessly with AI, where smart technology meets user-friendly SEO tools.
+                            Our AI blends intelligence with empathy, becoming a constant presence in your everyday life. She’s not just smart — she cares.
                         </p>
 
                         <div className="mt-8 flex flex-col sm:flex-row gap-3">
-                            <input className="input-pill w-full sm:w-auto min-w-[220px]" placeholder="Your email" aria-label="Email" />
+                            <input
+                                className="input-pill w-full sm:w-auto min-w-[220px]"
+                                placeholder="Your email"
+                                aria-label="Email"
+                            />
                             <button className="btn-hero text-sm font-medium">Join waitlist</button>
                         </div>
 
@@ -40,7 +64,7 @@ export default function Hero(){
                         </div>
                     </div>
 
-                    {/* кубы справа */}
+                    {/* правый блок фоновых кубиков из макета */}
                     <div className="relative hidden lg:block">
                         <Image
                             src="/hero-cubes.png"

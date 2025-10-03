@@ -18,9 +18,9 @@ export default function Intro() {
                    md:text-[34px] md:leading-snug
                    text-white"
             >
-                Harness the power of AI, making<br className="hidden md:block" />
-                search engine optimization intuitive<br className="hidden md:block" />
-                and effective for all skill levels.
+                An AI designed to connect with you on a human level - offering <br className="hidden md:block" />
+                support, understanding, <br className="hidden md:block" />
+                and real companionship anytime.
             </h2>
         </Section>
     );

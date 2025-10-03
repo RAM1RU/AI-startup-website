@@ -9,8 +9,8 @@ type Feature = {
 
 const features: Feature[] = [
     {
-        title: "Visual reports",
-        desc: "Visual insights into your site’s performance.",
+        title: "Realistic Conversations",
+        desc: "AI understands context, mood, and responds as if a real person is by your side.",
         icon: (
             <svg viewBox="0 0 24 24" className="size-5">
                 <path
@@ -21,8 +21,35 @@ const features: Feature[] = [
         ),
     },
     {
-        title: "SEO goal setting",
-        desc: "Helps you set and achieve SEO goals with guided assistance.",
+        title: "Emotional Support",
+        desc: "always ready to listen, encourage, share joy, or comfort you in difficult moments.",
+        icon: (
+            <svg viewBox="0 0 24 24" className="size-5">
+                <path d="M4 18h4V8H4v10zm6 0h4V4h-4v14zm6 0h4v-7h-4v7z" fill="currentColor" />
+            </svg>
+        ),
+    },
+    {
+        title: "Personalization",
+        desc: "adapts to your interests, communication style, and preferences over time.",
+        icon: (
+            <svg viewBox="0 0 24 24" className="size-5">
+                <path d="M12 3v6m0 6v6M3 12h6m6 0h6" stroke="currentColor" strokeWidth="1.6" fill="none" strokeLinecap="round" />
+            </svg>
+        ),
+    },
+    {
+        title: "Visual Presence",
+        desc: "beautiful photos/avatars that create the feeling of real companionship.",
+        icon: (
+            <svg viewBox="0 0 24 24" className="size-5">
+                <path d="M9 18l6-12M5 10l4 2 2 4 4 2" stroke="currentColor" strokeWidth="1.6" fill="none" strokeLinecap="round" />
+            </svg>
+        ),
+    },
+    {
+        title: "Always Available",
+        desc: "there for you 24/7, anytime and anywhere.",
         icon: (
             <svg viewBox="0 0 24 24" className="size-5">
                 <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="1.6" fill="none" />
@@ -31,38 +58,11 @@ const features: Feature[] = [
         ),
     },
     {
-        title: "One-click optimization",
-        desc: "Perform complex SEO audits and optimizations with a single click.",
-        icon: (
-            <svg viewBox="0 0 24 24" className="size-5">
-                <path d="M12 3v6m0 6v6M3 12h6m6 0h6" stroke="currentColor" strokeWidth="1.6" fill="none" strokeLinecap="round" />
-            </svg>
-        ),
-    },
-    {
-        title: "Smart Keyword Generator",
-        desc: "Automatic suggestions and the best keywords to target.",
-        icon: (
-            <svg viewBox="0 0 24 24" className="size-5">
-                <path d="M9 18l6-12M5 10l4 2 2 4 4 2" stroke="currentColor" strokeWidth="1.6" fill="none" strokeLinecap="round" />
-            </svg>
-        ),
-    },
-    {
-        title: "Automated alerts",
-        desc: "Automatic notifications about your SEO health, including quick fixes.",
+        title: "Privacy & Security",
+        desc: "conversations remain completely private, with no data shared with third parties.",
         icon: (
             <svg viewBox="0 0 24 24" className="size-5">
                 <path d="M12 4l7 14H5l7-14zM12 10v3m0 3h.01" stroke="currentColor" strokeWidth="1.6" fill="none" strokeLinecap="round" />
-            </svg>
-        ),
-    },
-    {
-        title: "Competitor reports",
-        desc: "Provides insights into competitors’ keyword strategies and ranking.",
-        icon: (
-            <svg viewBox="0 0 24 24" className="size-5">
-                <path d="M4 18h4V8H4v10zm6 0h4V4h-4v14zm6 0h4v-7h-4v7z" fill="currentColor" />
             </svg>
         ),
     },

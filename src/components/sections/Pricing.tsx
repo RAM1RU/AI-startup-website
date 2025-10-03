@@ -5,39 +5,39 @@ import clsx from "clsx";
 const plans = [
     {
         name: "Basic",
-        price: "$29",
+        price: "$5.99",
         features: [
-            "Keyword optimization: Unlimited",
-            "Automated meta tags: 1000",
-            "SEO Monitoring",
-            "Monthly reports",
+            "Unlimited text chat with your AI companion",
+            "Basic personalization (name, simple preferences)",
+            "Standard avatars/photos",
+            "Available 24/7",
+            "Secure & private conversations",
         ],
     },
     {
         name: "Pro",
-        price: "$79",
+        price: "$15.99",
         features: [
-            "Keyword optimization: Unlimited",
-            "Automated meta tags: Unlimited",
-            "SEO Monitoring",
-            "Monthly reports",
-            "Content suggestions",
-            "Link optimization",
+            "Everything in Basic, plus:",
+            "Advanced personalization (interests, memory of past chats, mood adaptation)",
+            "Access to premium avatars & photo packs",
+            "Early access to voice messages (AI-generated voice replies)",
+            "Priority response speed",
+            "Weekly “mood journal” with AI insights",
         ],
         popular: true,
     },
     {
         name: "Business",
-        price: "$149",
+        price: "$25.99",
         features: [
-            "Keyword optimization: Unlimited",
-            "Automated meta tags: Unlimited",
-            "SEO Monitoring",
-            "Monthly reports",
-            "Content suggestions",
-            "Link optimization",
-            "Multi-user access",
-            "API Integration",
+            "Everything in Pro, plus:",
+            "Full visual experience (exclusive realistic avatars, “girlfriend/best friend” style packs)",
+            "Real-time voice conversations (not just messages)",
+            "Custom personality settings (choose character traits, style of communication)",
+            "Shared activities (games, quizzes, virtual date modes)",
+            "Beta access to VR/AR features",
+            "Direct priority support + special updates before others",
         ],
     },
 ];
@@ -55,51 +55,57 @@ export default function Pricing() {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl mx-auto">
-                {plans.map((plan, idx) => (
-                    <div
-                        key={plan.name}
-                        onMouseEnter={() => setHovered(idx)}
-                        onMouseLeave={() => setHovered(null)}
-                        className={clsx(
-                            "rounded-xl p-8 border border-white/10 bg-black/40 backdrop-blur transition-all duration-500 cursor-pointer relative flex flex-col", // flex col
-                            hovered === idx
-                                ? "bg-gradient-to-b from-violet-700/40 to-violet-900/30 shadow-[0_0_40px_rgba(139,92,246,0.7)] scale-[1.03]"
-                                : "hover:bg-violet-800/10"
-                        )}
-                    >
-                        {plan.popular && (
-                            <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-violet-600 text-xs font-medium px-3 py-1 rounded-full shadow-lg">
-                                Most Popular
-                            </div>
-                        )}
-
-                        <div className="flex-grow">
-                            <h3 className="text-xl font-semibold">{plan.name}</h3>
-                            <p className="mt-2 text-3xl font-bold">{plan.price}</p>
-
-                            <ul className="mt-6 space-y-3 text-sm text-white/70">
-                                {plan.features.map((f) => (
-                                    <li key={f} className="flex items-start gap-2">
-                                        <span className="text-violet-400">✔</span>
-                                        {f}
-                                    </li>
-                                ))}
-                            </ul>
-                        </div>
-
-                        {/* кнопка всегда внизу */}
-                        <button
+                {plans.map((plan, idx) => {
+                    const active = hovered === idx;
+                    return (
+                        <div
+                            key={plan.name}
+                            onMouseEnter={() => setHovered(idx)}
+                            onMouseLeave={() => setHovered(null)}
+                            onTouchStart={() => setHovered(idx)}   // для тач-устройств
+                            onTouchEnd={() => setHovered(null)}
                             className={clsx(
-                                "mt-8 w-full py-2 rounded-lg font-medium transition-colors",
-                                hovered === idx
-                                    ? "bg-violet-600 hover:bg-violet-500"
-                                    : "bg-white/10 hover:bg-white/20"
+                                "pricing-card",                            // <-- важно
+                                "relative flex flex-col h-full rounded-2xl p-8",
+                                "border border-white/10 bg-black/40 backdrop-blur",
+                                "transition-all duration-500 cursor-pointer overflow-hidden",
+                                active
+                                    ? "is-active shadow-[0_0_30px_rgba(139,92,246,0.7),0_0_60px_rgba(124,58,237,0.5)] scale-[1.02]"
+                                    : "hover:shadow-[0_0_25px_rgba(139,92,246,0.4)]"
                             )}
                         >
-                            Get Started
-                        </button>
-                    </div>
-                ))}
+                            {plan.popular && (
+                                <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-violet-600 text-xs font-medium px-3 py-1 rounded-full shadow-lg z-10">
+                                    Most Popular
+                                </div>
+                            )}
+
+                            <div className="flex-grow">
+                                <h3 className="text-xl font-semibold">{plan.name}</h3>
+                                <p className="mt-2 text-3xl font-bold">{plan.price}</p>
+
+                                <ul className="mt-6 space-y-3 text-sm text-white/70">
+                                    {plan.features.map((f) => (
+                                        <li key={f} className="flex items-start gap-2">
+                                            <span className="text-violet-400">✔</span>
+                                            {f}
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+
+                            {/* кнопка всегда внизу, на одном уровне у всех */}
+                            <button
+                                className={clsx(
+                                    "mt-8 w-full py-2 rounded-lg font-medium transition-colors",
+                                    active ? "bg-violet-600 hover:bg-violet-500" : "bg-white/10 hover:bg-white/20"
+                                )}
+                            >
+                                Get Started
+                            </button>
+                        </div>
+                    );
+                })}
             </div>
         </section>
     );

@@ -26,6 +26,10 @@ export default {
                 "grid-dark":
                     "radial-gradient(1200px 600px at 50% -10%, rgba(124,58,237,.25), rgba(124,58,237,0) 60%), radial-gradient(800px 400px at 80% 20%, rgba(124,58,237,.18), rgba(124,58,237,0) 60%), radial-gradient(600px 300px at 20% 30%, rgba(168,85,247,.14), rgba(168,85,247,0) 60%), linear-gradient(#0B0B0F,#0B0B0F), repeating-linear-gradient(0deg, rgba(255,255,255,.04) 0 1px, transparent 1px 80px), repeating-linear-gradient(90deg, rgba(255,255,255,.04) 0 1px, transparent 1px 80px)",
             },
+            animation: {
+                "spin-slow": "spin 25s linear infinite",
+                "bounce-slow": "bounce 4s infinite",
+            },
         },
     },
     plugins: [],

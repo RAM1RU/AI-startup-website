@@ -7,10 +7,9 @@ import { clsx } from "clsx";
 type Link = { label: string; href: string; chevron?: boolean };
 const links: Link[] = [
     { label: "Features", href: "#features", chevron: true },
-    { label: "Developers", href: "#developers" },
-    { label: "Company", href: "#company", chevron: true },
-    { label: "Blog", href: "#blog" },
-    { label: "Changelog", href: "#changelog" },
+    { label: "Visual", href: "#visual" },
+    { label: "Reviews", href: "#reviews" },
+    { label: "Pricing", href: "#pricing", chevron: true },
 ];
 
 export default function Header() {
@@ -33,7 +32,7 @@ export default function Header() {
                                 className="object-contain drop-shadow-[0_0_18px_rgba(124,58,237,.85)]"
                             />
                         </div>
-                        <span className="ml-2 font-display font-semibold tracking-tight">AI Startup</span>
+                        <span className="ml-2 font-display font-semibold tracking-tight">AMESTIA</span>
                     </a>
 
                     {/* НАВИГАЦИЯ — desktop */}

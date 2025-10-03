@@ -20,7 +20,7 @@ export default function Showcase() {
                         {/* Контент окна */}
                         <div className="relative">
                             <Image
-                                src="/Assistant.png"
+                                src="/Assistant-1.png"
                                 alt="Assistant customization and chat"
                                 width={1600}
                                 height={1100}

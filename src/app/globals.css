@@ -3,133 +3,91 @@
 @tailwind utilities;
 
 :root { color-scheme: dark; }
-html, body { height: 100%; }
+html, body { height: 100%; scroll-behavior: smooth; }
 body { @apply bg-bg text-white antialiased; }
 
-/* общая карточка */
-.card { @apply rounded-2xl bg-bg-muted/70 shadow-card backdrop-blur; }
-.card-border { box-shadow: inset 0 0 0 1px rgba(255,255,255,.06); }
-.outline-glow { box-shadow: 0 0 0 1px rgba(124,58,237,.4); }
-
-/* квадрат-рамка под логотип с мягким свечением */
-.logo-frame {
-    position: relative;
-    width: 36px; height: 36px;
-    border-radius: 10px;
-    background: linear-gradient(180deg, rgba(25,24,33,.85), rgba(14,15,22,.85));
-    box-shadow:
-            inset 0 0 0 1px rgba(255,255,255,.08),
-            0 8px 30px rgba(0,0,0,.35);
-}
-.logo-frame::after {
-    content: "";
-    position: absolute; inset: 3px;
-    border-radius: 8px;
-    /* лёгкий фиолетовый ореол по краям */
-    box-shadow:
-            0 0 0 1px rgba(124,58,237,.35),
-            0 12px 40px rgba(124,58,237,.25);
-    pointer-events: none;
-}
-
-/* слабая «звёздная пыль» */
-.bg-stars {
-  background-image:
-          radial-gradient(2px 2px at 20% 20%, rgba(255,255,255,.2), transparent 40%),
-          radial-gradient(1.5px 1.5px at 70% 40%, rgba(255,255,255,.15), transparent 40%),
-          radial-gradient(1.2px 1.2px at 30% 70%, rgba(255,255,255,.12), transparent 40%);
-  background-repeat: no-repeat;
-}
-
-/* ===== background layers for page ===== */
-/* ===== HERO CARD: фон (звёзды + сетка) + фиолетовый glow в ОДНОМ ::before ===== */
+/* ================= HERO CARD ================= */
 .hero-card {
     position: relative;
     border-radius: 24px;
     overflow: hidden;
-    background: rgba(17, 18, 26, .75);                 /* тёмная полупрозрачная «карточка» */
-    box-shadow: inset 0 0 0 1px rgba(255,255,255,.06); /* тонкая внутренняя граница */
+    background: rgba(17,18,26,.75);
+    box-shadow: inset 0 0 0 1px rgba(255,255,255,.06);
 }
 
-/* весь декоративный фон на отдельном слое */
+/* фоновые слои */
 .hero-card::before {
     content: "";
-    position: absolute;
-    inset: 0;
+    position: absolute; inset: 0;
     border-radius: 24px;
-
-    /* СЛОИ СНИЗУ ВВЕРХ:
-       1) звёзды (cover)
-       2) сетка (тайл)
-       3) верхний фиолетовый блик (полупрозрачный) */
     background-image:
             url("/bg/stars.png"),
             url("/bg/grid.png"),
             radial-gradient(800px 400px at 50% -10%, rgba(124,58,237,.30), transparent 60%);
-
-    background-repeat:
-            repeat,
-            repeat,
-            no-repeat;
-
-    background-size:
-            cover,
-            120px 120px,
-            100% 100%;
-
-    background-position:
-            center,
-            center,
-            center;
-
+    background-repeat: repeat, repeat, no-repeat;
+    background-size: cover, 120px 120px, 100% 100%;
+    background-position: center, center, center;
     z-index: 0;
 }
 
-/* любой контент внутри карточки — поверх фона */
-.hero-card > * {
-    position: relative;
-    z-index: 1;
-}
-
-/* bottom-right purple glow */
+/* нижнее свечение */
 .hero-card::after {
     content: "";
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    z-index: 0;
+    position: absolute; inset: 0;
     border-radius: 24px;
-
-    /* яркое фиолетовое свечение в правом нижнем углу */
-    background:
-            radial-gradient(700px 500px at 100% 100%, rgba(124,58,237,0.55), transparent 70%),
-            radial-gradient(500px 360px at 90% 100%, rgba(168,85,247,0.40), transparent 65%),
-            radial-gradient(300px 240px at 95% 95%, rgba(192,132,252,0.50), transparent 60%);
     mix-blend-mode: screen;
-    opacity: 1; /* максимально насыщенное */
-    filter: blur(4px); /* лёгкое размытие, делает glow «мягче», но ярче в центре */
-
+    filter: blur(4px);
+    background:
+            radial-gradient(700px 500px at 100% 100%, rgba(124,58,237,.55), transparent 70%),
+            radial-gradient(500px 360px at 90% 100%, rgba(168,85,247,.40), transparent 65%),
+            radial-gradient(300px 240px at 95% 95%, rgba(192,132,252,.50), transparent 60%);
+    z-index: 0;
 }
-
-/* адаптив: на больших экранах увеличиваем пятно */
 @media (min-width: 768px) {
     .hero-card::after {
         background:
-                radial-gradient(900px 640px at 100% 100%, rgba(124,58,237,0.55), transparent 70%),
-                radial-gradient(640px 460px at 90% 100%, rgba(168,85,247,0.40), transparent 65%),
-                radial-gradient(380px 280px at 95% 95%, rgba(192,132,252,0.50), transparent 60%);
+                radial-gradient(900px 640px at 100% 100%, rgba(124,58,237,.55), transparent 70%),
+                radial-gradient(640px 460px at 90% 100%, rgba(168,85,247,.40), transparent 65%),
+                radial-gradient(380px 280px at 95% 95%, rgba(192,132,252,.50), transparent 60%);
     }
 }
 @media (min-width: 1280px) {
     .hero-card::after {
         background:
-                radial-gradient(1100px 780px at 100% 100%, rgba(124,58,237,0.55), transparent 70%),
-                radial-gradient(780px 540px at 90% 100%, rgba(168,85,247,0.40), transparent 65%),
-                radial-gradient(460px 320px at 95% 95%, rgba(192,132,252,0.50), transparent 60%);
+                radial-gradient(1100px 780px at 100% 100%, rgba(124,58,237,.55), transparent 70%),
+                radial-gradient(780px 540px at 90% 100%, rgba(168,85,247,.40), transparent 65%),
+                radial-gradient(460px 320px at 95% 95%, rgba(192,132,252,.50), transparent 60%);
     }
 }
 
-/* для email-инпута — как в макете (пилюля, тонкая граница, темный фон) */
+/* ================= HERO CUBES ================= */
+.hero-3d { perspective: 1200px; }
+
+.hero-cube {
+    position: absolute;
+    width: 180px;
+    height: 180px;
+    object-fit: contain;
+    pointer-events: auto;
+    transform-style: preserve-3d;
+    transition: transform .45s cubic-bezier(.22,.9,.24,1), filter .45s ease;
+    filter: drop-shadow(0 25px 55px rgba(124,58,237,.35));
+    -webkit-mask-image: radial-gradient(closest-side, #000 96%, transparent 100%);
+    mask-image: radial-gradient(closest-side, #000 96%, transparent 100%);
+    image-rendering: optimizeQuality;
+}
+.hero-cube:hover {
+    transform: translateZ(120px) translateY(-8px) rotateX(6deg) rotateY(-8deg) scale(1.06);
+    filter: drop-shadow(0 35px 75px rgba(124,58,237,.55));
+}
+@media (max-width: 1279px) {
+    .hero-cube { width: 160px; height: 160px; }
+}
+@media (max-width: 767px) {
+    .hero-cube { display: none; }
+}
+
+/* ================= INPUT + BUTTON ================= */
 .input-pill {
     height: 48px;
     border-radius: 9999px;
@@ -138,10 +96,8 @@ body { @apply bg-bg text-white antialiased; }
     padding: 0 16px;
     color: #fff;
 }
-
 .input-pill::placeholder { color: rgba(255,255,255,.45); }
 
-/* кнопка в hero — пилюля с мягким свечением */
 .btn-hero {
     height: 48px;
     padding: 0 20px;
@@ -151,41 +107,16 @@ body { @apply bg-bg text-white antialiased; }
 }
 .btn-hero:hover { transform: translateY(-1px); }
 
-/* ====== Пилюля (как в макете) ====== */
-.pill {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 4px 14px;
-    border-radius: 9999px;
-    font-size: 0.875rem;
-    font-weight: 500;
-    color: #a78bfa; /* фиолетовый */
-    background: rgba(124,58,237,0.08);
-    border: 1px solid rgba(124,58,237,0.3);
-}
-
-.pill-dot {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: #a78bfa;
-    box-shadow: 0 0 6px rgba(167,139,250,0.8);
-}
-
-/* ===== App showcase frame (как окно приложения) ===== */
+/* ================= SHOWCASE ================= */
 .app-shell {
     position: relative;
     border-radius: 20px;
     background: rgba(15,16,22,.85);
-    box-shadow:
-            inset 0 0 0 1px rgba(255,255,255,.06),
-            0 20px 60px rgba(0,0,0,.45);
+    box-shadow: inset 0 0 0 1px rgba(255,255,255,.06),
+    0 20px 60px rgba(0,0,0,.45);
     backdrop-filter: blur(6px);
     overflow: hidden;
 }
-
-/* мягкое фиолетовое свечение по краям карточки */
 .app-shell::before {
     content: "";
     position: absolute; inset: -2px;
@@ -194,69 +125,33 @@ body { @apply bg-bg text-white antialiased; }
     pointer-events: none;
     z-index: 0;
 }
-
-/* верхняя «полоска окна» */
-.app-titlebar {
-    height: 44px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 0 14px;
-    border-bottom: 1px solid rgba(255,255,255,.06);
-    background: linear-gradient(180deg, rgba(15,16,22,.9), rgba(14,15,22,.6));
-}
-
-/* три системные точки слева */
-.win-dot {
-    width: 9px; height: 9px; border-radius: 9999px; opacity: .9;
-    box-shadow: 0 0 8px currentColor;
-}
-.win-red   { color: #F87171; background: currentColor; }
-.win-yellow{ color: #FBBF24; background: currentColor; }
-.win-green { color: #34D399; background: currentColor; }
-
-/* ====== Showcase Wrapper with Big Glow & Frame ====== */
 .showcase-wrapper {
     position: relative;
-    border-radius: 36px;                /* более крупное скругление */
-    padding: 12px;                      /* отступ от контента */
+    border-radius: 36px;
+    padding: 12px;
     background: rgba(11,11,15,.95);
-    box-shadow:
-            0 0 50px rgba(124,58,237,.5),     /* фиолетовое свечение */
-            0 0 120px rgba(124,58,237,.25);   /* дальний ореол */
+    box-shadow: 0 0 50px rgba(124,58,237,.5), 0 0 120px rgba(124,58,237,.25);
     overflow: hidden;
 }
-
-/* ====== Extra dark border frame ====== */
 .showcase-wrapper::before {
     content: "";
-    position: absolute;
-    inset: 0;
+    position: absolute; inset: 0;
     border-radius: 36px;
-    border: 3px solid rgba(255,255,255,.08); /* толстая рамка */
+    border: 3px solid rgba(255,255,255,.08);
     pointer-events: none;
     z-index: 1;
 }
 
-/* ==== Testimonials: более широкий контейнер и сильный glow ==== */
-.testimonial-wrap {
-    position: relative;
-    border-radius: 22px;
-}
-
-/* сама карточка */
+/* ================= TESTIMONIALS ================= */
 .testimonial-card {
     position: relative;
     border-radius: 22px;
     background: radial-gradient(85% 130% at 60% 0%, rgba(124,58,237,.36), rgba(17,18,26,.94) 55%) #0b0b0f;
-    box-shadow:
-            inset 0 0 0 1px rgba(255,255,255,.09),
-            0 40px 110px rgba(124,58,237,.35),     /* усилили наружное свечение */
-            0 80px 180px rgba(124,58,237,.22);     /* дальний ореол */
+    box-shadow: inset 0 0 0 1px rgba(255,255,255,.09),
+    0 40px 110px rgba(124,58,237,.35),
+    0 80px 180px rgba(124,58,237,.22);
     overflow: hidden;
 }
-
-/* лёгкие звёзды внутри */
 .testimonial-card::before {
     content: "";
     position: absolute; inset: 0;
@@ -265,8 +160,6 @@ body { @apply bg-bg text-white antialiased; }
     opacity: .55;
     pointer-events: none;
 }
-
-/* стрелки */
 .t-arrow {
     width: 44px; height: 44px;
     display: grid; place-items: center;
@@ -282,25 +175,127 @@ body { @apply bg-bg text-white antialiased; }
     box-shadow: 0 22px 50px rgba(124,58,237,.35);
 }
 
-/* ===== анимации появления ===== */
-@keyframes slideInRight {
-    from { opacity: 0; transform: translateX(90px); }
-    to   { opacity: 1; transform: translateX(0); }
-}
-@keyframes slideInLeft {
-    from { opacity: 0; transform: translateX(-90px); }
-    to   { opacity: 1; transform: translateX(0); }
+/* ================= TESTIMONIALS FIX ================= */
+
+/* Контейнер для выравнивания содержимого */
+.testimonial-inner {
+    display: grid;
+    grid-template-columns: auto 1fr; /* фото + текст */
+    align-items: center;
+    gap: 1.5rem;
+    padding: 2rem 3rem; /* равномерные внутренние отступы */
 }
 
-.slide-in-right { animation: slideInRight 0.8s cubic-bezier(0.25, 0.8, 0.25, 1) both; }
-.slide-in-left  { animation: slideInLeft  0.8s cubic-bezier(0.25, 0.8, 0.25, 1) both; }
+/* Фото (аватар) */
+.testimonial-photo {
+    flex-shrink: 0;
+    width: 72px;
+    height: 72px;
+    border-radius: 9999px;
+    object-fit: cover;
+    box-shadow: 0 0 20px rgba(124,58,237,.45);
+}
 
-/* ===== Pricing Hover Glow ===== */
+/* Текст */
+.testimonial-text {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    max-width: 680px;   /* ограничение ширины текста */
+    line-height: 1.6;
+}
+
+/* Стрелки по бокам */
+.testimonial-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    gap: 1rem;
+    width: 100%;
+    justify-content: space-between;
+    padding: 0 1rem;
+    pointer-events: none; /* чтобы клики проходили только на кнопки */
+}
+
+.testimonial-nav button {
+    pointer-events: auto;
+}
+
+/* ================= PRICING ================= */
+/* ===== Pricing card + hover pattern (и по классу is-active) ===== */
 .pricing-card {
-    transition: all 0.5s ease;
+    position: relative;
+    overflow: hidden;
+    transition: transform .5s ease, box-shadow .5s ease, background .5s ease;
 }
-.pricing-card:hover {
-    background: linear-gradient(180deg, rgba(139,92,246,0.35), rgba(109,40,217,0.25));
-    box-shadow: 0 0 40px rgba(139,92,246,0.6);
-    transform: scale(1.03);
+
+/* нижнее свечение (самый низкий слой) */
+.pricing-card::after {
+    content: "";
+    position: absolute; inset: -1px;
+    z-index: 0;
+    pointer-events: none;
+    background:
+            radial-gradient(600px 400px at 100% 100%, rgba(124,58,237,.45), transparent 65%),
+            radial-gradient(420px 300px at 90% 100%, rgba(168,85,247,.28), transparent 60%);
+    opacity: 0;
+    transition: opacity .4s ease;
+    filter: blur(2px);
 }
+
+/* паттерн поверх свечения, под контентом */
+.pricing-card::before {
+    content: "";
+    position: absolute; inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    background-image: url("/bg/pattern-1.png");   /* <- проверь путь и имя */
+    background-repeat: repeat;
+    background-size: 220px 220px;               /* шаг сетки */
+    background-position: center;
+    opacity: 0;
+    mix-blend-mode: screen;
+    transition: opacity .35s ease;
+}
+
+/* Включение по hover и по классу .is-active (для мобильных) */
+.pricing-card:hover::before,
+.pricing-card.is-active::before { opacity: .35; }
+.pricing-card:hover::after,
+.pricing-card.is-active::after { opacity: 1; }
+
+/* контент всегда поверх */
+.pricing-card > * {
+    position: relative;
+    z-index: 2;
+}
+
+/* (опционально) лёгкое плавное движение паттерна на hover */
+@keyframes driftPattern {
+    from { background-position: 0 0; }
+    to   { background-position: 0 -120px; }
+}
+.pricing-card:hover::before,
+.pricing-card.is-active::before {
+    animation: driftPattern 12s linear infinite;
+}
+
+/* ================= DECORATIVE SHAPES ================= */
+.shape {
+    position: absolute;
+    z-index: -1;
+    pointer-events: none;
+    user-select: none;
+    will-change: transform, opacity;
+    filter: saturate(1.1) brightness(1.05);
+    mix-blend-mode: screen;
+}
+.shape--feather {
+    -webkit-mask-image: radial-gradient(closest-side, #000 75%, transparent 100%);
+    mask-image: radial-gradient(closest-side, #000 75%, transparent 100%);
+}
+@keyframes float-y { from { transform: translateY(0) } 70% { transform: translateY(-10px) } to { transform: translateY(0) } }
+@keyframes slow-rot { from { transform: rotate(0deg) } to { transform: rotate(360deg) } }
+.animate-float { animation: float-y 5s ease-in-out infinite; }
+.animate-rot { animation: slow-rot 48s linear infinite; }
