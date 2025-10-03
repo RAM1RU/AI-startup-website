@@ -1,4 +1,5 @@
 "use client";
+
 import { useState } from "react";
 import clsx from "clsx";
 
@@ -46,12 +47,10 @@ export default function Pricing() {
     const [hovered, setHovered] = useState<number | null>(null);
 
     return (
-        <section className="py-24 relative">
+        <section id="pricing" className="py-24 relative">
             <div className="text-center mb-12">
                 <h2 className="text-4xl font-bold">Pricing</h2>
-                <p className="mt-3 text-white/70">
-                    Choose the right plan to meet your SEO needs and start optimizing today.
-                </p>
+                <p className="mt-3 text-white/70">Choose the right plan to meet your needs and start today.</p>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl mx-auto">
@@ -62,10 +61,10 @@ export default function Pricing() {
                             key={plan.name}
                             onMouseEnter={() => setHovered(idx)}
                             onMouseLeave={() => setHovered(null)}
-                            onTouchStart={() => setHovered(idx)}   // для тач-устройств
+                            onTouchStart={() => setHovered(idx)}
                             onTouchEnd={() => setHovered(null)}
                             className={clsx(
-                                "pricing-card",                            // <-- важно
+                                "pricing-card",
                                 "relative flex flex-col h-full rounded-2xl p-8",
                                 "border border-white/10 bg-black/40 backdrop-blur",
                                 "transition-all duration-500 cursor-pointer overflow-hidden",
@@ -94,7 +93,6 @@ export default function Pricing() {
                                 </ul>
                             </div>
 
-                            {/* кнопка всегда внизу, на одном уровне у всех */}
                             <button
                                 className={clsx(
                                     "mt-8 w-full py-2 rounded-lg font-medium transition-colors",

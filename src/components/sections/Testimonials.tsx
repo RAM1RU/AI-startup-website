@@ -1,7 +1,8 @@
 "use client";
+
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
-import Section from "../Section";
+import Section from "../ui/Section";
 
 type Testimonial = {
     name: string;
@@ -52,7 +53,6 @@ export default function Testimonials() {
         setI((v) => wrap(v - 1));
     };
 
-    // управление с клавиатуры
     useEffect(() => {
         const onKey = (e: KeyboardEvent) => {
             if (e.key === "ArrowRight") next();
@@ -62,10 +62,8 @@ export default function Testimonials() {
         return () => window.removeEventListener("keydown", onKey);
     }, []);
 
-    // свайп
     const startX = useRef<number | null>(null);
-    const onTouchStart = (e: React.TouchEvent) =>
-        (startX.current = e.touches[0].clientX);
+    const onTouchStart = (e: React.TouchEvent) => (startX.current = e.touches[0].clientX);
     const onTouchEnd = (e: React.TouchEvent) => {
         if (startX.current == null) return;
         const dx = e.changedTouches[0].clientX - startX.current;
@@ -76,63 +74,25 @@ export default function Testimonials() {
     const t = DATA[i];
 
     return (
-        <Section className="py-14 md:py-20">
-            {/* чуть уже/левее и с боковыми «карманами» под стрелки */}
+        <Section id="reviews" className="py-14 md:py-20">
             <div className="mx-auto max-w-[1200px] px-4 md:px-8">
-                <div
-                    className="testimonial-card relative"
-                    onTouchStart={onTouchStart}
-                    onTouchEnd={onTouchEnd}
-                >
-                    {/* внутренние отступы: даём место слева/справа под стрелки */}
+                <div className="testimonial-card relative" onTouchStart={onTouchStart} onTouchEnd={onTouchEnd}>
                     <div className="relative px-6 md:px-16 py-8 md:py-12">
-                        {/* стрелки — всегда видимы, не перекрывают контент */}
+                        {/* стрелки */}
                         <div className="absolute inset-y-0 left-2 right-2 md:left-4 md:right-4 flex items-center justify-between z-20 pointer-events-none">
-                            <button
-                                aria-label="Previous"
-                                onClick={prev}
-                                className="t-arrow pointer-events-auto"
-                            >
-                                <svg
-                                    viewBox="0 0 24 24"
-                                    width="20"
-                                    height="20"
-                                    className="text-white/85"
-                                >
-                                    <path
-                                        d="M15 6l-6 6 6 6"
-                                        fill="none"
-                                        stroke="currentColor"
-                                        strokeWidth="1.8"
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                    />
+                            <button aria-label="Previous" onClick={prev} className="t-arrow pointer-events-auto">
+                                <svg viewBox="0 0 24 24" width="20" height="20" className="text-white/85">
+                                    <path d="M15 6l-6 6 6 6" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
                                 </svg>
                             </button>
-                            <button
-                                aria-label="Next"
-                                onClick={next}
-                                className="t-arrow pointer-events-auto"
-                            >
-                                <svg
-                                    viewBox="0 0 24 24"
-                                    width="20"
-                                    height="20"
-                                    className="text-white/85"
-                                >
-                                    <path
-                                        d="M9 6l6 6-6 6"
-                                        fill="none"
-                                        stroke="currentColor"
-                                        strokeWidth="1.8"
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                    />
+                            <button aria-label="Next" onClick={next} className="t-arrow pointer-events-auto">
+                                <svg viewBox="0 0 24 24" width="20" height="20" className="text-white/85">
+                                    <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
                                 </svg>
                             </button>
                         </div>
 
-                        {/* контент — центрируем на мобилке, смещаем чуть левее на десктопе */}
+                        {/* контент */}
                         <div
                             key={i}
                             className={`relative grid gap-6 md:gap-10 items-center
@@ -141,26 +101,13 @@ export default function Testimonials() {
                           md:grid-cols-[200px,1fr]
                           ${dir === "right" ? "slide-in-right" : "slide-in-left"}`}
                         >
-                            {/* аватар */}
                             <div className="justify-self-center md:justify-self-start -mt-1">
-                                <Image
-                                    src={t.avatar}
-                                    alt={t.name}
-                                    width={196}
-                                    height={196}
-                                    priority
-                                    className="rounded-2xl ring-1 ring-white/15"
-                                />
+                                <Image src={t.avatar} alt={t.name} width={196} height={196} priority className="rounded-2xl ring-1 ring-white/15" />
                             </div>
 
-                            {/* текст */}
                             <div className="w-full md:max-w-[680px]">
-                                <blockquote className="text-white text-xl md:text-2xl leading-[1.35]">
-                                    “{t.quote}”
-                                </blockquote>
-                                <div className="mt-5 text-white/85 text-sm font-medium">
-                                    {t.name}
-                                </div>
+                                <blockquote className="text-white text-xl md:text-2xl leading-[1.35]">“{t.quote}”</blockquote>
+                                <div className="mt-5 text-white/85 text-sm font-medium">{t.name}</div>
                                 <div className="text-white/60 text-sm">
                                     {t.role} @ {t.company}
                                 </div>
@@ -172,12 +119,7 @@ export default function Testimonials() {
                 {/* индикаторы */}
                 <div className="mt-4 flex justify-center gap-2">
                     {DATA.map((_, idx) => (
-                        <span
-                            key={idx}
-                            className={`h-1.5 rounded-full transition-all ${
-                                idx === i ? "w-6 bg-white/85" : "w-3 bg-white/30"
-                            }`}
-                        />
+                        <span key={idx} className={`h-1.5 rounded-full transition-all ${idx === i ? "w-6 bg-white/85" : "w-3 bg-white/30"}`} />
                     ))}
                 </div>
             </div>

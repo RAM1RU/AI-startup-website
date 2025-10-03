@@ -1,6 +1,7 @@
 "use client";
-import Section from "../Section";
-import Announcement from "../Announcement";
+
+import Section from "../ui/Section";
+import Announcement from "../ui/Announcement";
 import Image from "next/image";
 
 export default function Hero() {
@@ -9,10 +10,10 @@ export default function Hero() {
             {/* Единая карточка с фоном, сеткой и фиолетовыми бликами */}
             <div className="hero-card mx-auto max-w-7xl p-6 md:p-12 lg:p-16 relative">
                 {/* 3D-слой с интерактивными кубами поверх фоновой композиции */}
-                <div className="hero-3d absolute inset-0 hidden lg:block pointer-events-none z-[2]">
+                <div className="hero-3d absolute inset-0 hidden lg:block z-[2]">
                     {/* верхний правый куб */}
                     <Image
-                        src="/purple-cube.png"
+                        src="/shapes/purple-cube.png"
                         alt=""
                         width={180}
                         height={180}
@@ -21,7 +22,7 @@ export default function Hero() {
                     />
                     {/* нижний правый куб */}
                     <Image
-                        src="/purple-cube.png"
+                        src="/shapes/purple-cube.png"
                         alt=""
                         width={180}
                         height={180}
@@ -33,23 +34,22 @@ export default function Hero() {
                     {/* левая колонка */}
                     <div className="max-w-3xl">
                         <Announcement />
-                        <h1 className="mt-6 font-display font-bold tracking-tight
-                           text-[44px] leading-[1.05]
-                           md:text-[72px] md:leading-[1.05]
-                           lg:text-[96px] lg:leading-[1.05]">
+                        <h1
+                            className="mt-6 font-display font-bold tracking-tight
+                         text-[44px] leading-[1.05]
+                         md:text-[72px] md:leading-[1.05]
+                         lg:text-[96px] lg:leading-[1.05]"
+                        >
                             Not just <span className="text-brand">SMART,</span> Someone who <span className="text-brand">CARES.</span>
                         </h1>
 
                         <p className="mt-6 text-base md:text-lg text-white/70 max-w-2xl">
-                            Our AI blends intelligence with empathy, becoming a constant presence in your everyday life. She’s not just smart — she cares.
+                            Our AI blends intelligence with empathy, becoming a constant presence in your everyday life. She’s not just
+                            smart — she cares.
                         </p>
 
                         <div className="mt-8 flex flex-col sm:flex-row gap-3">
-                            <input
-                                className="input-pill w-full sm:w-auto min-w-[220px]"
-                                placeholder="Your email"
-                                aria-label="Email"
-                            />
+                            <input className="input-pill w-full sm:w-auto min-w-[220px]" placeholder="Your email" aria-label="Email" />
                             <button className="btn-hero text-sm font-medium">Join waitlist</button>
                         </div>
 
