@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState, type TouchEvent } from "react";
 import Image from "next/image";
 import Section from "../ui/Section";
 
@@ -42,16 +42,16 @@ const DATA: Testimonial[] = [
 export default function Testimonials() {
     const [i, setI] = useState(0);
     const [dir, setDir] = useState<"left" | "right">("right");
-    const wrap = (n: number) => (n + DATA.length) % DATA.length;
 
-    const next = () => {
+    const next = useCallback(() => {
         setDir("right");
-        setI((v) => wrap(v + 1));
-    };
-    const prev = () => {
+        setI((v) => (v + 1 + DATA.length) % DATA.length);
+    }, []);
+
+    const prev = useCallback(() => {
         setDir("left");
-        setI((v) => wrap(v - 1));
-    };
+        setI((v) => (v - 1 + DATA.length) % DATA.length);
+    }, []);
 
     useEffect(() => {
         const onKey = (e: KeyboardEvent) => {
@@ -60,11 +60,13 @@ export default function Testimonials() {
         };
         window.addEventListener("keydown", onKey);
         return () => window.removeEventListener("keydown", onKey);
-    }, []);
+    }, [next, prev]); // ⬅️ добавили зависимости
 
     const startX = useRef<number | null>(null);
-    const onTouchStart = (e: React.TouchEvent) => (startX.current = e.touches[0].clientX);
-    const onTouchEnd = (e: React.TouchEvent) => {
+    const onTouchStart = (e: TouchEvent) => {
+        startX.current = e.touches[0].clientX;
+    };
+    const onTouchEnd = (e: TouchEvent) => {
         if (startX.current == null) return;
         const dx = e.changedTouches[0].clientX - startX.current;
         if (Math.abs(dx) > 40) (dx < 0 ? next : prev)();

@@ -1,8 +1,5 @@
 import { Resend } from "resend";
 import nodemailer from "nodemailer";
-import type SMTPTransport from "nodemailer/lib/smtp-transport";
-import type SMTPPool from "nodemailer/lib/smtp-pool";
-import type SESTransport from "nodemailer/lib/ses-transport";
 
 const RESEND_KEY = process.env.RESEND_API_KEY || "";
 const useResend = RESEND_KEY.startsWith("re_");
@@ -35,9 +32,9 @@ function templateUnsubscribe(url: string) {
     return `<p style="margin-top:24px;color:rgba(255,255,255,.55);font-size:12px">Don't want emails from us? <a href="${url}" style="color:#a78bfa">Unsubscribe</a>.</p>`;
 }
 
-async function getTransport(): Promise<nodemailer.Transporter> {
+async function getTransport() {
+    // Приоритет: пользовательский SMTP → Ethereal
     if (MAIL_HOST && MAIL_PORT) {
-        console.log("MAIL: using custom SMTP", { host: MAIL_HOST, port: MAIL_PORT, secure: MAIL_SECURE });
         return nodemailer.createTransport({
             host: MAIL_HOST,
             port: MAIL_PORT,
@@ -46,29 +43,25 @@ async function getTransport(): Promise<nodemailer.Transporter> {
         });
     }
 
-    try {
-        const test = await nodemailer.createTestAccount();
-        console.log("MAIL: using Ethereal test account", test.user);
-        return nodemailer.createTransport({
-            host: "smtp.ethereal.email",
-            port: 587,
-            auth: { user: test.user, pass: test.pass },
-        });
-    } catch (err: any) {
-        console.warn("MAIL: Ethereal unavailable, falling back to streamTransport (mock). Reason:", err?.code || err?.message || err);
-        return nodemailer.createTransport({
-            streamTransport: true,
-            newline: "unix",
-            buffer: true,
-        } as any);
-    }
+    // Ethereal (dev)
+    const test = await nodemailer.createTestAccount();
+    return nodemailer.createTransport({
+        host: "smtp.ethereal.email",
+        port: 587,
+        auth: { user: test.user, pass: test.pass },
+    });
 }
 
+/** Возвращает:
+ *  - null для Resend/реального SMTP (нет превью),
+ *  - Ethereal preview URL при доступном Ethereal,
+ *  - confirmUrl если Ethereal недоступен (мок-режим).
+ */
 export async function sendWaitlistConfirmation(to: string, confirmUrl: string): Promise<string | null> {
     try {
         if (useResend && resend) {
             await resend.emails.send({
-                from: process.env.EMAIL_FROM || "Amestia <no-reply@amestia.dev>",
+                from: process.env.EMAIL_FROM || "Amestia <no-reply@amestia.xx.kg>",
                 to,
                 subject: "Confirm your spot on the Amestia waitlist",
                 html: templateConfirm(confirmUrl),
@@ -76,22 +69,23 @@ export async function sendWaitlistConfirmation(to: string, confirmUrl: string): 
             return null;
         }
 
-        const transporter = await getTransport();
-        const info = await transporter.sendMail({
-            from: process.env.EMAIL_FROM || '"Amestia" <no-reply@amestia.dev>',
-            to,
-            subject: "Confirm your spot on the Amestia waitlist",
-            html: templateConfirm(confirmUrl),
-        });
+        try {
+            const transporter = await getTransport();
+            const info = await transporter.sendMail({
+                from: process.env.EMAIL_FROM || '"Amestia" <no-reply@amestia.xx.kg>',
+                to,
+                subject: "Confirm your spot on the Amestia waitlist",
+                html: templateConfirm(confirmUrl),
+            });
 
-        const testUrl = nodemailer.getTestMessageUrl(info as any) as string | false;
-        if (testUrl) {
-            console.log("Ethereal preview URL:", testUrl);
-            return testUrl;
+            const url = nodemailer.getTestMessageUrl(info);
+            if (url) return url;
+            // Реальный SMTP без превью-ссылки:
+            return null;
+        } catch {
+            // Нет интернета/заперт Ethereal: возвращаем confirmUrl как «превью»
+            return confirmUrl;
         }
-
-        console.log("MAIL: mock transport used, returning confirmUrl as preview");
-        return confirmUrl;
     } catch (err) {
         console.error("ERROR in sendWaitlistConfirmation:", err);
         return confirmUrl;
@@ -108,7 +102,7 @@ export async function sendBroadcast(
 
     if (useResend && resend) {
         await resend.emails.send({
-            from: process.env.EMAIL_FROM || "Amestia <no-reply@amestia.dev>",
+            from: process.env.EMAIL_FROM || "Amestia <no-reply@amestia.xx.kg>",
             to,
             subject,
             html: footer,
@@ -116,19 +110,18 @@ export async function sendBroadcast(
         return null;
     }
 
-    const transporter = await getTransport();
-    const info = await transporter.sendMail({
-        from: process.env.EMAIL_FROM || '"Amestia" <no-reply@amestia.dev>',
-        to,
-        subject,
-        html: footer,
-    });
-
-    const testUrl = nodemailer.getTestMessageUrl(info as any) as string | false;
-    if (testUrl) {
-        console.log("Ethereal preview URL:", testUrl);
-        return testUrl;
+    try {
+        const transporter = await getTransport();
+        const info = await transporter.sendMail({
+            from: process.env.EMAIL_FROM || '"Amestia" <no-reply@amestia.xx.kg>',
+            to,
+            subject,
+            html: footer,
+        });
+        const url = nodemailer.getTestMessageUrl(info);
+        return url || null;
+    } catch (e) {
+        console.error("ERROR in sendBroadcast:", e);
+        return null;
     }
-    console.log("MAIL: mock transport used for broadcast, no preview URL");
-    return null;
 }

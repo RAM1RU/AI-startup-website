@@ -78,7 +78,7 @@ export default function Hero() {
                                     });
                                     const data = await res.json();
 
-                                    // Dev-хелпер: покажем превью письма в консоли, если Ethereal
+                                    // Dev-хелпер: покажем превью письма в консоли, если Ethereal/mock
                                     if (data?.previewUrl) {
                                         // eslint-disable-next-line no-console
                                         console.log("Ethereal preview URL:", data.previewUrl);

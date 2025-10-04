@@ -19,11 +19,9 @@ export async function POST(req: Request) {
         const token = crypto.randomUUID();
         const confirmUrl = `${process.env.APP_URL}/api/waitlist/confirm?token=${token}`;
 
-        // helper: отправить письмо и вернуть JSON с previewUrl (в dev через Ethereal)
-        const sendAndReply = async (extra: Record<string, any> = {}) => {
+        const sendAndReply = async (extra: Record<string, unknown> = {}) => {
             const previewUrl = await sendWaitlistConfirmation(email, confirmUrl);
-            const body: any = { ok: true, ...extra };
-            // В dev удобно видеть ссылку; в проде она будет null (Resend)
+            const body: Record<string, unknown> = { ok: true, ...extra };
             if (process.env.NODE_ENV !== "production") body.previewUrl = previewUrl;
             return NextResponse.json(body);
         };
@@ -44,8 +42,8 @@ export async function POST(req: Request) {
         });
 
         return sendAndReply();
-    } catch (e: any) {
-        if (e?.name === "ZodError") {
+    } catch (e: unknown) {
+        if (e instanceof z.ZodError) {
             return NextResponse.json({ ok: false, error: "Invalid email" }, { status: 400 });
         }
         console.error(e);

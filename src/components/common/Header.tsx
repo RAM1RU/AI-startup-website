@@ -1,11 +1,12 @@
 "use client";
 import { useState } from "react";
 import Image from "next/image";
+import Link from "next/link"; // ⬅️ добавил
 import { Button } from "../ui/Button";
 import clsx from "clsx";
 
-type Link = { label: string; href: string; chevron?: boolean };
-const links: Link[] = [
+type LinkItem = { label: string; href: string; chevron?: boolean };
+const links: LinkItem[] = [
     { label: "Visual", href: "#visual" },
     { label: "Features", href: "#features", chevron: true },
     { label: "Reviews", href: "#reviews" },
@@ -21,10 +22,10 @@ export default function Header() {
                 {/* стеклянная плашка */}
                 <div className="flex h-14 items-center justify-between rounded-2xl border border-white/10 bg-[#0F1016]/70 px-3 backdrop-blur-md shadow-card">
                     {/* ЛОГО + бренд */}
-                    <a href="/" className="flex items-center gap-3">
+                    <Link href="/" className="flex items-center gap-3"> {/* ⬅️ Link вместо <a> */}
                         <div className="relative w-8 h-8 flex items-center justify-center rounded-md bg-black/20">
                             <Image
-                                src="/Logo.png"             /* кладём файл в /public/Logo.png */
+                                src="/Logo.png"
                                 alt="Amestia"
                                 width={32}
                                 height={32}
@@ -33,7 +34,7 @@ export default function Header() {
                             />
                         </div>
                         <span className="ml-2 font-display font-semibold tracking-tight">AMESTIA</span>
-                    </a>
+                    </Link>
 
                     {/* desktop-навигация */}
                     <nav className="hidden md:flex items-center gap-6">
