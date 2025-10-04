@@ -265,3 +265,37 @@ body { @apply bg-bg text-white antialiased; }
 @keyframes slow-rot { from { transform: rotate(0deg) } to { transform: rotate(360deg) } }
 .animate-float { animation: float-y 5s ease-in-out infinite; }
 .animate-rot   { animation: slow-rot 48s linear infinite; }
+
+/* ===== Ultra-smooth Testimonials (без изменений разметки) ===== */
+
+/* вход справа */
+@keyframes slideInRight {
+    from { opacity: 0; transform: translateX(16px); }
+    to   { opacity: 1; transform: translateX(0); }
+}
+
+/* вход слева */
+@keyframes slideInLeft {
+    from { opacity: 0; transform: translateX(-16px); }
+    to   { opacity: 1; transform: translateX(0); }
+}
+
+/* мягкая кинематика (длинная, но лёгкая) */
+.slide-in-right,
+.slide-in-left {
+    will-change: transform, opacity;
+    animation-duration: 3s;                 /* медленнее и плавнее */
+    animation-timing-function: cubic-bezier(.22, .8, .26, 1);
+    animation-fill-mode: both;
+}
+
+.slide-in-right { animation-name: slideInRight; }
+.slide-in-left  { animation-name: slideInLeft; }
+
+/* если у пользователя включено «уменьшить анимацию» */
+@media (prefers-reduced-motion: reduce) {
+    .slide-in-right,
+    .slide-in-left {
+        animation: none !important;
+    }
+}

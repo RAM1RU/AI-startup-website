@@ -1,16 +1,20 @@
 "use client";
 
+import { useState } from "react";
 import Section from "../ui/Section";
 import Announcement from "../ui/Announcement";
 import Image from "next/image";
 
 export default function Hero() {
+    const [loading, setLoading] = useState(false);
+    const [msg, setMsg] = useState<string | null>(null);
+
     return (
         <Section className="pt-16 md:pt-20">
             {/* Единая карточка с фоном, сеткой и фиолетовыми бликами */}
             <div className="hero-card mx-auto max-w-7xl p-6 md:p-12 lg:p-16 relative">
-                {/* 3D-слой с интерактивными кубами поверх фоновой композиции */}
-                <div className="hero-3d absolute inset-0 hidden lg:block z-[2]">
+                {/* 3D-слой с кубами: не перехватывает клики */}
+                <div className="hero-3d absolute inset-0 hidden lg:block z-[2] pointer-events-none">
                     {/* верхний правый куб */}
                     <Image
                         src="/shapes/purple-cube.png"
@@ -36,9 +40,9 @@ export default function Hero() {
                         <Announcement />
                         <h1
                             className="mt-6 font-display font-bold tracking-tight
-                         text-[44px] leading-[1.05]
-                         md:text-[72px] md:leading-[1.05]
-                         lg:text-[96px] lg:leading-[1.05]"
+               text-[44px] leading-[1.05]
+               md:text-[72px] md:leading-[1.05]
+               lg:text-[96px] lg:leading-[1.05]"
                         >
                             Not just <span className="text-brand">SMART,</span> Someone who <span className="text-brand">CARES.</span>
                         </h1>
@@ -48,10 +52,72 @@ export default function Hero() {
                             smart — she cares.
                         </p>
 
-                        <div className="mt-8 flex flex-col sm:flex-row gap-3">
-                            <input className="input-pill w-full sm:w-auto min-w-[220px]" placeholder="Your email" aria-label="Email" />
-                            <button className="btn-hero text-sm font-medium">Join waitlist</button>
-                        </div>
+                        {/* === ФОРМА JOIN WAITLIST === */}
+                        <form
+                            className="mt-8 flex flex-col sm:flex-row gap-3 relative z-10"
+                            onSubmit={async (e) => {
+                                e.preventDefault();
+                                if (loading) return; // защита от дабл-клика
+                                setMsg(null);
+
+                                const form = e.currentTarget as HTMLFormElement;
+                                const emailInput = form.elements.namedItem("email") as HTMLInputElement;
+                                const email = emailInput.value.trim();
+
+                                if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+                                    setMsg("Please enter a valid email.");
+                                    return;
+                                }
+
+                                try {
+                                    setLoading(true);
+                                    const res = await fetch("/api/waitlist", {
+                                        method: "POST",
+                                        headers: { "Content-Type": "application/json" },
+                                        body: JSON.stringify({ email }),
+                                    });
+                                    const data = await res.json();
+
+                                    // Dev-хелпер: покажем превью письма в консоли, если Ethereal
+                                    if (data?.previewUrl) {
+                                        // eslint-disable-next-line no-console
+                                        console.log("Ethereal preview URL:", data.previewUrl);
+                                    }
+
+                                    if (data.ok) {
+                                        emailInput.value = "";
+                                        setMsg(
+                                            data.already
+                                                ? "You’re already confirmed — we’ll keep you posted!"
+                                                : "Check your inbox to confirm your email ✉️"
+                                        );
+                                    } else {
+                                        setMsg("Error: " + (data.error || "Please try again later"));
+                                    }
+                                } catch {
+                                    setMsg("Network error. Try again.");
+                                } finally {
+                                    setLoading(false);
+                                }
+                            }}
+                        >
+                            <input
+                                name="email"
+                                className="input-pill w-full sm:w-auto min-w-[220px]"
+                                placeholder="Your email"
+                                aria-label="Email"
+                                type="email"
+                                inputMode="email"
+                                autoComplete="email"
+                                required
+                                disabled={loading}
+                            />
+                            <button type="submit" className="btn-hero text-sm font-medium" disabled={loading}>
+                                {loading ? "Sending..." : "Join waitlist"}
+                            </button>
+                            {msg && <p className="text-sm text-white/70 sm:ml-3">{msg}</p>}
+                        </form>
+                        {/* === /ФОРМА === */}
 
                         <div className="mt-8 flex items-center gap-6 text-sm text-white/45">
                             <span>Trusted by innovative teams</span>
